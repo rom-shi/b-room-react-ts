@@ -12,8 +12,9 @@ interface ICatalogBooks {
 
 export const getCatalogBooks = (request: IRequestState) => {
   const byGenres = getBooksByGenres(request.selectedGenres);
-  const byPrice = getBooksByPrice(byGenres, +(request.selectedMinPrice /
-  100).toFixed(5), request.selectedMaxPrice / 100);
+  const byPrice = getBooksByPrice(byGenres,
+    (request.selectedMinPrice / 100),
+    request.selectedMaxPrice / 100);
   const bySort = getBooksBySort(byPrice, request.selectedSort, request.selectedOrder);
   const byQuery = getBooksByQuery(bySort, request.selectedQuery.toLocaleLowerCase());
 
@@ -25,10 +26,11 @@ export const getCatalogBooks = (request: IRequestState) => {
   const totalBooks = byQuery.length;
 
   const arr: number[] = [];
+
   testBooks.forEach((item) => { arr.push(item.hardPrice); arr.push(item.paperPrice); });
 
-  const minPrice = +(Math.min(...arr) * 100).toFixed(2);
-  const maxPrice = +(Math.max(...arr) * 100).toFixed(2);
+  const minPrice = +(Math.floor(Math.min(...arr) * 100)).toFixed(2);
+  const maxPrice = +(Math.ceil(Math.max(...arr) * 100)).toFixed(2);
 
   return new Promise<ICatalogBooks>((res) => {
     setTimeout(() => {
@@ -49,12 +51,15 @@ const getBooksByGenres = (genres: string[]) => {
 
 const getBooksByPrice = (books: BookModel[], minVal: number, maxVal: number) => {
   if (minVal === 0 && maxVal === 0) return books;
-  return books.filter((item) => item.paperPrice >= minVal && item.paperPrice <= maxVal &&
-  item.hardPrice >= minVal && item.hardPrice <= maxVal);
+
+  const result = books.filter((item) => item.hardPrice >= minVal && item.hardPrice <= maxVal);
+
+  return result;
 };
 
 const getBooksBySort = (books: BookModel[], sort: 'price' | 'title' | 'author' | 'rating' | 'date', order: 'ASC' | 'DESC') => {
   let name: 'hardPrice' | 'title' | 'author' | 'rating' | 'date';
+
   if (sort === 'price') name = 'hardPrice';
   if (sort === 'title') name = 'title';
   if (sort === 'author') name = 'author';

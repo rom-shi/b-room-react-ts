@@ -17,8 +17,8 @@ const Recomendation: React.FC<ILocalBook> = ({ thisBook }) => {
       try {
         const resp = await getRecomendationBooks(thisBook);
         setRecomendationBook(resp);
-      } catch (e) {
-        console.error('Error gerRecomendation');
+      } catch (error) {
+        console.error('Error gerRecomendation >> ', error);
       }
     })();
   }, []);
@@ -27,10 +27,15 @@ const Recomendation: React.FC<ILocalBook> = ({ thisBook }) => {
     <>
       {recomendationBook.length > 0 &&
       <Body>
-        <h3 className='recomentation__title'>Recomendation</h3>
-        <div className='recomentation__content'>
-          {recomendationBook?.map((item, index) => (
-            <Book key={index} book={item} onClick={() => scrollToTop()}/>
+        <h3 className={'recomentation__title'}>Recomendation</h3>
+
+        <div className={'recomentation__content'}>
+          {recomendationBook?.map((book, index) => (
+            <Book
+              book={book}
+              key={index}
+              onClick={() => scrollToTop()}
+            />
           ))}
         </div>
       </Body>}
@@ -43,20 +48,23 @@ export default Recomendation;
 const Body = styled.section`
   display: flex;
   flex-direction: column;
-  margin: 0 auto 80px;
 
   .recomentation__title {
     font-weight: 700;
     font-size: 40px;
     line-height: 60px;
     margin: 0 0 50px;
-    color: var(--dark__blue) 
+    color: var(--dark__blue);
+
+    @media screen and (max-width: 520px) {
+      font-size: 32px;
+      line-height: 54px;
+    }
   }
 
   .recomentation__content {
     display: flex;
     flex-wrap: wrap;
-    margin: 0 auto 0;
-    gap: 17px;
+    gap: 16px;
   }
 `;

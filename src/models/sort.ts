@@ -1,3 +1,3 @@
 export type SortModel = {
-  sort?: string;
+  sort?: string
 };

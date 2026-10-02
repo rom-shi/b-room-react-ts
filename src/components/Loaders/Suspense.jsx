@@ -3,7 +3,7 @@ import castle from '../../assets/castle.webp';
 
 const Loader = () => (
   <Body>
-    <img className='loader__castle' src={castle} alt='Castle'/>
+    <img className={'loader__castle'} src={castle} alt={'Castle'} />
   </Body>
 );
 

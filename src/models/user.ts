@@ -1,10 +1,10 @@
 export type UserModel = {
-  userId: number
-  name: string
+  cartBooks: string[]
   email: string
-  photo: string | null
   favoriteBooks: string[]
   myComments: number[]
-  cartBooks: string[]
+  name: string
+  photo: string | null
   ratedBooks: string[]
+  userId: number
 };

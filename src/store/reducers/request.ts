@@ -2,15 +2,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IRequestState } from '../../models/request';
 
 const initialState: IRequestState = {
+  currentPage: 0,
+  noLimit: false,
+  pageSize: 4,
   selectedGenres: [],
-  selectedMinPrice: 0,
   selectedMaxPrice: 0,
-  selectedSort: 'rating',
+  selectedMinPrice: 0,
   selectedOrder: 'DESC',
   selectedQuery: '',
-  currentPage: 0,
-  pageSize: 4,
-  noLimit: false,
+  selectedSort: 'rating',
 };
 
 const request = createSlice({
@@ -20,7 +20,7 @@ const request = createSlice({
     reqGenres(state, action: PayloadAction<{ genresId: string[] }>) {
       state.selectedGenres = action.payload.genresId;
     },
-    reqPrice(state, action: PayloadAction<{minVal: number, maxVal: number}>) {
+    reqPrice(state, action: PayloadAction<{ minVal: number, maxVal: number }>) {
       state.selectedMinPrice = action.payload.minVal;
       state.selectedMaxPrice = action.payload.maxVal;
     },
@@ -51,9 +51,22 @@ const request = createSlice({
     reqNoLimit(state) {
       state.noLimit = !state.noLimit;
     },
+    resetFilters() {
+      return initialState;
+    },
   },
 });
 
-export const { reqGenres, reqPrice, reqSort,
-  reqOrder, reqQuery, reqPagination, reqPagesize, reqNoLimit } = request.actions;
+export const {
+  reqGenres,
+  reqNoLimit,
+  reqOrder,
+  reqPagesize,
+  reqPagination,
+  reqPrice,
+  reqQuery,
+  reqSort,
+  resetFilters,
+} = request.actions;
+
 export default request.reducer;

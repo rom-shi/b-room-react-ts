@@ -23,6 +23,7 @@ interface IBook {
 const Book: React.FC<IBook> = ({ book }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const user = useAppSelector((state) => state.userSlice.user);
   const cartBooks = useAppSelector((state) => state.cartSlice.cartItems);
 
@@ -47,34 +48,35 @@ const Book: React.FC<IBook> = ({ book }) => {
   return (
     <Body photo={book.photo} isFavorite={isFavoriteBook}>
       {book.photo
-        ? <div className="book__cover" onClick={() => { navigate(`/catalog/${book.bookId}`); scrollToTop(); }}>
-          {user && <button className="book__favorite" onClick={(e) => handleAddFavorite(e, book.bookId)} id={book.bookId.toString()} title='Add favorite'/>}
+        ? <div className={'book__cover'} onClick={() => { navigate(`/catalog/${book.bookId}`); scrollToTop(); }}>
+          {user && <button className={'book__favorite'} onClick={(e) => handleAddFavorite(e, book.bookId)} id={book.bookId.toString()} title={'Add to favorite'} />}
 
-          <div className="book__attributies">
-            {book.news && <img className='book__attributies-new' src={newBook} alt='new book'/>}
+          {(book.news || book.bestsaller) && <div className={'book__attributies'}>
+            {book.news && <img className={'book__attributies-new'} src={newBook} alt={'new book'} />}
 
-            {book.bestsaller && <img className='book__attributies-best' src={bestsellerBook} alt='best book'/>}
-          </div>
+            {book.bestsaller && <img className={'book__attributies-best'} src={bestsellerBook} alt={'best book'} />}
+          </div>}
         </div>
-        : <BookLoader><div/><div/><div/><div/><div/><div/><div/><div/><div/><div/><div/><div/>
+        : <BookLoader>
+          <div/><div/><div/><div/><div/><div/><div/><div/><div/><div/><div/><div/>
         </BookLoader>
       }
-      <p className="book__title">{book.title}</p>
 
-      <p className="book__author">{book.author}</p>
+      <p className={'book__title'}>{book.title}</p>
 
-      {(book.rating || book.rating === 0) && <StarCounter rating={book.rating}/>}
+      <p className={'book__author'}>{book.author}</p>
 
-      <div style={{ margin: '0 auto' }}>
-        {thisBook
-          ? <ULink to='/cart' text='Added to cart' view='secondary' width='long'/>
-          : <BookButton
-            title={`$ ${(book.hardPrice * 100).toFixed(2)} USD`}
-            func={() => handleAddToCart(book.bookId, book.available)}
-            available={book.available}
-          />
-        }
-      </div>
+      {(book.rating || book.rating === 0) && <StarCounter rating={book.rating} />}
+
+      {thisBook
+        ? <ULink to={'/cart'} text={'Added to cart'} view={'book'} width={'long'} />
+        : <BookButton
+          available={book.available}
+          onClick={() => handleAddToCart(book.bookId, book.available)}
+          title={book.available ? `$ ${(book.hardPrice * 100).toFixed(2)} USD` : 'Not available'}
+          view={book.available ? '' : 'not-availble'}
+        />
+      }
     </Body>
   );
 };
@@ -89,16 +91,19 @@ interface IStylesProps {
 const Body = styled.div<IStylesProps>`
   display: flex;
   flex-direction: column;
-  /* width: calc((100% - 3 * 20px)/ 4); */
-  width: 305px;
-  height: 713px;
+  height: 50vw;
+  max-height: 800px;
+  width: calc((100% - 48px) / 4);
+
+  @media screen and (max-width: 700px) {
+    width: calc((50vw - 32px));
+    height: 100vw;
+  }
 
   .book {
     &__cover {
       display: flex;
-      width: 305px;
-      /* height: calc((100vw - 3 * 20px)/ 2); */
-      /* width: 100%; */
+      width: 100%;
       height: 63%;
       background: url(${(props) => props.photo});
       background-size: cover;
@@ -106,6 +111,10 @@ const Body = styled.div<IStylesProps>`
       margin-bottom: 30px;
       position: relative;
       cursor: pointer;
+
+      @media screen and (max-width: 960px) {
+        margin-bottom: 16px;
+      }
     }
 
     &__favorite {
@@ -118,27 +127,35 @@ const Body = styled.div<IStylesProps>`
       border-radius: 24px;
       top: 20px;
       left: 20px; 
-      background-size: cover;
       background: url(${favoriteButton});
+      transition: all 0.2s;
+      padding: 0;
+      background-size: contain;
+
+      @media screen and (max-width: 960px) {
+        width: 32px;
+        height: 32px;
+      }
 
       :hover {
         background: url(${favoriteButtonActive});
+        transition: all 0.2s;
+        background-size: contain;
       }
       
-    ${(p) => {
-    if (p.isFavorite) {
-      return css`
-        background: url(${favoriteButtonActive});
-      `;
-    }
-  }}
+    ${(props) => {
+      if (props.isFavorite) {
+        return css`
+          background: url(${favoriteButtonActive});
+          background-size: contain;
+        `;
+      }
+    }}
   }
 
     &__attributies {
       display: flex;
       flex-direction: column;
-      height: 70px;
-      width: 175px;
       position: absolute;
       bottom: 20px;
       left: 20px;
@@ -147,12 +164,22 @@ const Body = styled.div<IStylesProps>`
       &-new {
         width: 132px;
         height: 30px;
+
+        @media screen and (max-width: 960px) {
+          width: 100px;
+          height: 23px;
+        }
       }
 
       &-best{
         width: 175px;
         height: 30px;
         margin-top: 10px;
+
+        @media screen and (max-width: 960px) {
+          width: 120px;
+          height: 23px;
+        }
       }
     }
 
@@ -164,6 +191,12 @@ const Body = styled.div<IStylesProps>`
       margin: 0;
       overflow: hidden;
       white-space: nowrap;
+      text-overflow: ellipsis;
+
+      @media screen and (max-width: 960px) {
+        font-size: 16px;
+        line-height: 24px;
+      }
     }
 
     &__author {
@@ -174,6 +207,11 @@ const Body = styled.div<IStylesProps>`
       margin: 0;
       overflow: hidden;
       white-space: nowrap;
+
+      @media screen and (max-width: 960px) {
+        font-size: 16px;
+        line-height: 24px;
+      }
     }
   }
 `;

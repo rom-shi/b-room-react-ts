@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { SignupModel } from '../../../models/signUpForm';
 
 interface IUinput {
-  label: string,
-  placeholder: string,
-  register: UseFormRegister<SignupModel>,
-  regtxt: 'email' | 'password' | 'replay',
-  error?: FieldError,
-  icon: string,
-  autoComplete?: string,
-  type?: string,
+  label: string
+  placeholder: string
+  register: UseFormRegister<SignupModel>
+  regtxt: 'email' | 'password' | 'replay'
+  error?: FieldError
+  icon: string
+  autoComplete?: string
+  type?: string
 }
 
 const UInput: React.FC<IUinput> = ({
@@ -18,14 +18,14 @@ const UInput: React.FC<IUinput> = ({
 }) => {
   return (
     <Body error={!!error}>
-      <div className="uinput__wrapper">
+      <div className={'uinput__wrapper'}>
         <img
-          className="uinput__wrapper__icon"
+          className={'uinput__wrapper__icon'}
           src={icon}
           alt=''
         />
         <input
-          className='uinput__wrapper__input'
+          className={'uinput__wrapper__input'}
           placeholder={placeholder}
           {...register(regtxt)}
           autoComplete={autoComplete}
@@ -34,8 +34,8 @@ const UInput: React.FC<IUinput> = ({
       </div>
 
       {error
-        ? <label className="uinput__label" style={{ color: '#C30052' }}>{error?.message}</label>
-        : <label className="uinput__label">{label}</label>
+        ? <label className={'uinput__label'} style={{ color: '#C30052' }}>{error?.message}</label>
+        : <label className={'uinput__label'}>{label}</label>
       }
     </Body>
   );

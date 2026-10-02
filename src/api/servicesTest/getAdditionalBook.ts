@@ -28,8 +28,8 @@ const getBooksByGenres = (genres: string[]) => {
 
 const getBooksByPrice = (books: BookModel[], minVal: number, maxVal: number) => {
   if (minVal === 0 && maxVal === 0) return books;
-  return books.filter((item) => item.paperPrice >= minVal && item.paperPrice <= maxVal &&
-  item.hardPrice >= minVal && item.hardPrice <= maxVal);
+
+  return books.filter((item) => item.hardPrice >= minVal && item.hardPrice <= maxVal);
 };
 
 const getBooksBySort = (books: BookModel[], sort: 'price' | 'title' | 'author' | 'rating' | 'date', order: 'ASC' | 'DESC') => {

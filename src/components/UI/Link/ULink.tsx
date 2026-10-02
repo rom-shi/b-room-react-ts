@@ -3,18 +3,19 @@ import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 interface IUlink {
-  to: string
+  className?: string
+  minWidth? : string
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>
+  style?: React.CSSProperties
   text: string
+  to: string
   view: string
   width?: string
-  minWidth? : string
-  className?: any
-  style?: any
 }
 
-const ULink: React.FC<IUlink> = ({ to, text, view, width, className, style }) => {
+const ULink: React.FC<IUlink> = ({ to, text, view, width, className, style, onClick }) => {
   return (
-    <Body to={to} view={view} width={width} className={className} style={style}>
+    <Body to={to} view={view} width={width} className={className} style={style} onClick={onClick}>
       {text}
     </Body>
   );
@@ -30,14 +31,17 @@ interface IStyledProps {
 
 const Body = styled(NavLink)<IStyledProps>`
   display: flex;  
-  height: 40px;
+  /* height: 40px; */
   justify-content: center;
   align-items: center;
   border-radius: 16px;
   border: 2px solid var(--dark_blue);
   font-weight: 500;
   font-size: 16px;
+  line-height: 24px;
   text-decoration: none;
+  box-sizing: border-box;
+  padding: 8px 16px;
   width: ${(props) => {
     switch (props.width) {
     case 'long':
@@ -54,9 +58,13 @@ const Body = styled(NavLink)<IStyledProps>`
       return '220px';
 
     default:
-      return '100px';
+      return 'max-content';
     }
   }};
+
+  @media screen and (max-width: 420px) {
+    padding: 8px 12px;
+  }
 
   ${(props) => {
     switch (props.view) {
@@ -79,6 +87,21 @@ const Body = styled(NavLink)<IStyledProps>`
           background: #e6e6e6;
         } */
       `;
+    case 'book':
+      return css`
+        background: white;
+        color: var(--dark_blue);
+        margin: 2px auto;
+        width: 100%;
+
+        /* :hover {
+          background: #e6e6e6;
+        } */
+
+          @media screen and (max-width: 960px) {
+            padding: 4px 8px;
+          }
+      `;
     default:
       return css`
         background: var(--dark_blue);
@@ -88,7 +111,7 @@ const Body = styled(NavLink)<IStyledProps>`
   }}
 
   @media (max-width: 768px) {
-    min-width: ${(props) => {
+    /* min-width: ${(props) => {
     switch (props.width) {
     case 'long':
       return '220px';
@@ -96,6 +119,6 @@ const Body = styled(NavLink)<IStyledProps>`
     default:
       return '70px';
     }
-  }};
+  }}; */
   }
 `;

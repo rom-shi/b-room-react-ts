@@ -3,10 +3,11 @@ import { useAppSelector } from '../../store/hooks';
 
 export function RequireAuth() {
   const location = useLocation();
-  const user = useAppSelector((state) => state.userSlice.user);
+  const { user } = useAppSelector((state) => state.userSlice);
+
   if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to={'/login'} state={{ from: location }} replace />;
   }
 
-  return (<Outlet/>);
+  return <Outlet/>;
 }

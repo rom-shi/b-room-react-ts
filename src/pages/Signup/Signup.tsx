@@ -2,11 +2,12 @@ import React from 'react';
 import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
-import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { putUser } from '../../store/reducers/user';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useAppDispatch } from '../../store/hooks';
+import { putUser } from '../../store/reducers/user';
 import { registerUser } from '../../api/services/users';
 import UInput from '../../components/UI/Input/UInput';
 import UButton from '../../components/UI/Button/UButton';
@@ -69,7 +70,9 @@ const Signup: React.FC = () => {
   const onSubmit = async (data: SignupModel) => {
     try {
       if (data.password !== data.replay) return;
+
       const response = await registerUser(data);
+
       dispatch(putUser(response.data.user));
       navigate('/');
     } catch (e) {
@@ -83,40 +86,45 @@ const Signup: React.FC = () => {
 
   return (
     <Body>
-      <form className='signup-form' onSubmit={handleSubmit(onSubmit)}>
-        <h2 className='signup-form__title'>Sign Up</h2>
+      <Helmet>
+        <title>Signup</title>
+        <meta name={'description'} content={'Зарегистрируйтесь на сайте для больших возможностей'} />
+      </Helmet>
+
+      <form className={'signup-form'} onSubmit={handleSubmit(onSubmit)}>
+        <h2 className={'signup-form__title'}>Sign Up</h2>
 
         <UInput
+          error={errors.email}
+          icon={constans.mailIco}
           label={constans.labelEmail}
           placeholder={constans.placeholderEmail}
           register={register}
           regtxt={'email'}
-          error={errors.email}
-          icon={constans.mailIco}
         />
 
         <UInput
+          error={errors.password}
+          icon={constans.hideIco}
           label={constans.labelPassword}
           placeholder={constans.placeholderPassword}
           register={register}
           regtxt={'password'}
-          error={errors.password}
-          icon={constans.hideIco}
         />
 
         <UInput
+          error={errors.replay}
+          icon={constans.hideIco}
           label={constans.labelReplay}
           placeholder={constans.placeholderPasswordReplay}
           register={register}
           regtxt={'replay'}
-          error={errors.replay}
-          icon={constans.hideIco}
         />
 
-        <UButton text='Sing Up' view='primary' />
+        <UButton text={'Sing Up'} view={'primary'} />
       </form>
 
-      <img className='signup-form__picture' src={mainPicture} alt='Signup picture'/>
+      <img className={'signup-form__picture'} src={mainPicture} alt={'Signup picture'} />
     </Body>
   );
 };
@@ -130,6 +138,15 @@ const Body = styled.main`
   padding: 0 calc((1.3% - 9px) * 8);
   max-width: var(--width_content);
 
+  @media screen and (max-width: 1024px) {
+    padding: 0 16px;
+  }
+
+  @media screen and (max-width: 560px) {
+    flex-direction: column;
+    margin: 32px auto;
+  }
+
   .signup-form {
     font-weight: 700;
     font-size: 40px;
@@ -138,6 +155,10 @@ const Body = styled.main`
     max-width: 413px;
     width: 100%;
 
+    @media screen and (max-width: 560px) {
+      margin: auto;
+    }
+
     &__title {
       font-weight: 700;
       font-size: 40px;
@@ -145,6 +166,11 @@ const Body = styled.main`
       color:  var(--dark);
       margin: 0;
       margin-bottom: 60px;
+
+      @media screen and (max-width: 560px) {
+        margin: 0 0 32px 0;
+        font-size: 32px;
+      }
     }
 
     &__picture {
@@ -154,6 +180,15 @@ const Body = styled.main`
       height: 45.7%;
       min-width: 390px;
       padding-left:20px;
+
+      @media screen and (max-width: 700px) {
+        min-width: auto;
+        width: 250px;
+      }
+
+      @media screen and (max-width: 560px) {
+        margin: 32px auto 0;
+      }
     }
   }
 `;

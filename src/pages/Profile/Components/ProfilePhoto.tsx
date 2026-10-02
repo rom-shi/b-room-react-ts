@@ -3,17 +3,19 @@ import defaultProfileIco from '../../../assets/profile-ico.svg';
 import btnPhoto from '../../../assets/button-photo.svg';
 
 interface IPhoto {
-  updatable: boolean,
   photo: string | null,
+  updatable: boolean,
   updateFunc: React.ChangeEventHandler<HTMLInputElement>
 }
 
 const ProfilePhoto: React.FC<IPhoto> = ({ updatable, photo, updateFunc }) => {
   return (
     <Body>
-      <img className='profile__photo' src={photo || defaultProfileIco} alt='avatar'/>
-      <input className='profile__input' type='file' onChange={updateFunc} id='userPhoto'/>
-      {updatable && <label className='profile__label' htmlFor='userPhoto'/>}
+      <img className={'profile__photo'} src={photo || defaultProfileIco} alt={'avatar'} />
+
+      <input className={'profile__input'} type={'file'} onChange={updateFunc} id={'userPhoto'} />
+
+      {updatable && <label className={'profile__label'} htmlFor={'userPhoto'} />}
     </Body>
   );
 };
@@ -32,9 +34,19 @@ const Body = styled.div`
     height: 250px;  
   }
 
+  @media screen and (max-width: 600px) {
+    width: 150px;
+    height: 150px;  
+  }
+
+  @media screen and (max-width: 520px) {
+    width: 100px;
+    height: 100px;  
+  }
+
   .profile__photo {
-    width: 100%;
-    height: 100%;
+    /* width: 100%; */
+    /* height: 100%; */
     border-radius: 24px;
   }
 
@@ -55,6 +67,11 @@ const Body = styled.div`
     @media screen and (max-width: 960px) {
       width: 30px;
       height: 30px;
+    }
+
+    @media screen and (max-width: 600px) {
+      right: 10px;
+      bottom: 10px; 
     }
   }
 `;

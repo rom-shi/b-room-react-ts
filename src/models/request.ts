@@ -1,11 +1,11 @@
 export interface IRequestState {
+  currentPage: number
+  noLimit: boolean
+  pageSize: number
   selectedGenres: string[]
-  selectedMinPrice: number
   selectedMaxPrice: number
-  selectedSort: 'price' | 'title' | 'author' | 'rating' | 'date'
+  selectedMinPrice: number
   selectedOrder: 'ASC' | 'DESC'
   selectedQuery: string
-  currentPage: number
-  pageSize: number
-  noLimit: boolean
-}
+  selectedSort: 'price' | 'title' | 'author' | 'rating' | 'date'
+};

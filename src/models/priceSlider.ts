@@ -1,3 +1,3 @@
 export type PriceSliderModel = {
-  price?: string;
+  price?: string
 };

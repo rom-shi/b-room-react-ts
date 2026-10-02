@@ -2,9 +2,9 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { BookModel } from '../../models/book';
 
 type myResponse = {
-  books: BookModel[],
-  minPriceBook: number,
-  maxPriceBook: number,
+  books: BookModel[]
+  minPriceBook: number
+  maxPriceBook: number
 }
 
 const bookAxios = axios.create({

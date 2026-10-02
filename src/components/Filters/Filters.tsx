@@ -1,37 +1,55 @@
-import React from 'react';
-// import { useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import styled from 'styled-components';
-import { useAppSelector } from '../../store/hooks';
-import MultiRangeSlider from './MultiRangeSlider/MultiRangeSlider';
-import SortFilter from './SortFilter';
-import Filter from './Filter';
+import { setOpenedFilter } from '../../store/reducers/user';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import MultiRangeSlider from './PriceSlider/PriceSlider';
 import GenresFilter from './GenresFilter';
+import SortFilter from './SortFilter';
 import PageSize from './PageSize';
+import Filter from './Filter';
 
-interface IFilters {
-  filter: {
-    openFilter: string
-    setOpenFilter: (name: string) => void
-  }
-}
+const Filters: React.FC = () => {
+  const dispatch = useAppDispatch();
 
-const Filters: React.FC<IFilters> = ({ filter }) => {
-  const pageSize = useAppSelector((store) => store.requestSlice.pageSize);
+  const { pageSize, selectedGenres, selectedMinPrice,
+    selectedMaxPrice, selectedSort } = useAppSelector((store) => store.requestSlice);
+  const { minPrice, maxPrice } = useAppSelector((state) => state.bookSlice);
+
+  const isChangedPrice = (selectedMinPrice !== minPrice && selectedMinPrice !== 0) ||
+    (selectedMaxPrice !== maxPrice && selectedMaxPrice !== 0);
+
+  const isChangedGenres = selectedGenres.length > 0;
+
+  useEffect(() => {
+    // eslint-disable-next-line
+    const listen = (event: any) => {
+      const id = event.target.id;
+
+      if (id !== 'size' && id !== 'genre' && id !== 'slider' && id !== 'sort') {
+        dispatch(setOpenedFilter(''));
+      }
+    };
+
+    document.addEventListener('click', listen);
+
+    return () => document.removeEventListener('click', listen);
+  }, []);
+
   return (
-    <Body onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>
-      <Filter title={`${pageSize}`} setOpenFilter={filter.setOpenFilter} openFilter={filter.openFilter}>
-        <PageSize setOpenFilter={filter.setOpenFilter}/>
+    <Body>
+      <Filter title={`Show by ${pageSize}`} id={'size'}>
+        <PageSize />
       </Filter>
 
-      <Filter title="Genre" setOpenFilter={filter.setOpenFilter} openFilter={filter.openFilter}>
-        <GenresFilter/>
+      <Filter title={`Genre ${isChangedGenres ? '*' : ''}`} id={'genre'}>
+        <GenresFilter />
       </Filter>
 
-      <Filter title="Price" setOpenFilter={filter.setOpenFilter} openFilter={filter.openFilter}>
-        <MultiRangeSlider/>
+      <Filter title={`Price ${isChangedPrice ? '*' : ''}`} id={'slider'} >
+        <MultiRangeSlider />
       </Filter>
 
-      <Filter title='Sort by' setOpenFilter={filter.setOpenFilter} openFilter={filter.openFilter}>
+      <Filter title={`Sort by ${selectedSort}`} id={'sort'}>
         <SortFilter />
       </Filter>
     </Body>
@@ -42,14 +60,17 @@ export default Filters;
 
 const Body = styled.div`
   display: flex;
-  width: 748px;
-  /* width: 628px; */
-  height: 48px;
+  gap: 16px;
   justify-content: space-between;
-  position: relative;
+  width: 748px;
 
-  @media (max-width: 1024px) {
+  @media screen and (max-width: 1024px) {
     width: 100%;
-    justify-content: space-around;
+  }
+
+  @media screen and (max-width: 600px) {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: 1fr 1fr;
   }
 `;

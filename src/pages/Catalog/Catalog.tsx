@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useAppSelector } from '../../store/hooks';
+import { Helmet } from 'react-helmet-async';
 import CatalogBody from '../../components/CatalogBody/CatalogBody';
 import AuthBanner from '../../components/AuthBanner/AuthBanner';
 
 const Catalog: React.FC = () => {
-  const user = useAppSelector((state) => state.userSlice.user);
-  const [openFilter, setOpenFilter] = useState<string>('');
-
-  const handleCloseFilter = () => {
-    setOpenFilter('');
-  };
-
   return (
-    <Body onClick={handleCloseFilter}>
-      <CatalogBody openFilter={openFilter} setOpenFilter={setOpenFilter} />
-      {user ? null : <AuthBanner />}
+    <Body>
+      <Helmet>
+        <title>Catalog</title>
+        <meta name={'description'} content={'В каталоге можете найти интересующие вас книги, добавить в избранное или купить'} />
+      </Helmet>
+
+      <CatalogBody />
+
+      <AuthBanner />
     </Body>
   );
 };
@@ -29,5 +28,9 @@ const Body = styled.main`
 
   @media (max-width: 1024px) {
     padding: 0 16px;   
+  }
+
+  @media screen and (max-width: 960px) {
+    margin: 40px auto 48px;
   }
 `;

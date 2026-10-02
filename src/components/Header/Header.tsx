@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -14,9 +14,10 @@ import userIco from '../../assets/button_user.svg';
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const user = useAppSelector((state) => state.userSlice.user);
   const cartBooks = useAppSelector((state) => state.cartSlice.cartItems);
-  const [search, setSearch] = useState<string>('');
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleQueryFind = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +27,7 @@ const Header: React.FC = () => {
 
   const debounce = (func: (e: React.ChangeEvent<HTMLInputElement>) => void) => {
     let timer: ReturnType<typeof setTimeout> | null;
+
     // eslint-disable-next-line
     return function name(...args: any) {
       if (args[0].target.value.trim() === '') return;
@@ -42,14 +44,15 @@ const Header: React.FC = () => {
 
   const getPageName = () => {
     const pathName = window.location.pathname;
+
     switch (pathName) {
-    // case '/': return 'Catalog';
-    // case '/cart': return 'Cart';
-    // case '/signup': return 'Sign Up';
-    // case '/login': return 'Log In';
-    // case '/catalog': return 'Catalog';
-    // case '/favorite': return 'Favorite';
-    // case '/profile': return 'Profile';
+    case '/': return 'Catalog';
+    case '/cart': return 'Cart';
+    case '/signup': return 'Sign Up';
+    case '/login': return 'Log In';
+    case '/catalog': return 'Catalog';
+    case '/favorite': return 'Favorite';
+    case '/profile': return 'Profile';
     default: return 'Catalog';
     }
   };
@@ -57,56 +60,60 @@ const Header: React.FC = () => {
   const clearInput = () => {
     if (inputRef.current == null) return;
     inputRef.current.value = '';
+
     navigate('catalog');
     dispatch(reqQuery({ query: inputRef.current.value }));
   };
 
   return (
     <Body>
-      <div className='header'>
-        <NavLink to='/' className='header__logo' title='Home page'>Header logo</NavLink>
+      <div className={'header'}>
+        <NavLink to={'/'} className={'header__logo'} title={'Home page'}>Header logo</NavLink>
 
-        <div className='header__center'>
-          <div className='header__center__label'>{getPageName()}</div>
+        <div className={'header__center'}>
+          <div className={'header__center__label'}>{getPageName()}</div>
 
-          <div className="header__input">
-            <img className='header__input__ico' src={searchIco} alt='search icon'/>
+          <div className={'header__input'}>
+            <img className={'header__input__ico'} src={searchIco} alt='search icon' />
 
-            <input className='header__input__body' placeholder="Search in catalog" onChange={debounceQuery} ref={inputRef}/>
+            <input className={'header__input__body'} placeholder={'Search in catalog'} onChange={debounceQuery} ref={inputRef} />
 
             {
               inputRef.current !== null && inputRef.current.value.length > 0 &&
-              <img className='header__input__clear' src={clearIco} alt='search icon' onClick={clearInput}/>
+              <img className={'header__input__clear'} src={clearIco} alt={'search icon'} onClick={clearInput} />
             }
           </div>
         </div>
 
-        {user ? (
-          <nav className='header__navbar'>
-            <NavLink to='/cart' className='header__navbar__cart'>
+        {user
+          ? <nav className={'header__navbar'}>
+            <NavLink to={'/cart'} className={'header__navbar__cart'}>
               Cart
-              {cartBooks.length !== 0 && <div className='cart__position'>{cartBooks.length}</div>}
+              {cartBooks.length !== 0 && <div className={'cart__position'}>{cartBooks.length}</div>}
             </NavLink>
-            <NavLink to='/favorite' className='header__navbar__favorite'>Favorite</NavLink>
-            <NavLink to='/profile' className='header__navbar__user'>Profile</NavLink>
-          </nav>
-        ) : (
-          <nav className='header__auth'>
-            <ULink to='/signup' text='Sign Up' view='secondary' className={'signup__button'}/>
-            <ULink to='/login' text='Log In' view='primary' className={'login__button'}/>
-          </nav>
-        )}
-      </div>
 
-      <div className="header__input__mobile">
-        <img className='header__input__ico' src={searchIco} alt='search icon'/>
-        <input className='header__input__body' placeholder="Search in catalog" onChange={debounceQuery}/>
-        {
-          inputRef.current !== null && inputRef.current.value.length > 0 &&
-          <img className='header__input__clear' src={clearIco} alt='search icon' onClick={clearInput}/>
+            <NavLink to={'/favorite'} className={'header__navbar__favorite'}>Favorite</NavLink>
+
+            <NavLink to={'/profile'} className={'header__navbar__user'}>Profile</NavLink>
+          </nav>
+          : <nav className={'header__auth'}>
+            <ULink to={'/signup'} text={'Sign Up'} view={'secondary'} className={'signup__button'} />
+
+            <ULink to={'/login'} text={'Log In'} view={'primary'} className={'login__button'} />
+          </nav>
         }
       </div>
 
+      <div className={'header__input__mobile'}>
+        <img className={'header__input__ico'} src={searchIco} alt={'search icon'} />
+
+        <input className={'header__input__body'} placeholder={'Search in catalog'} onChange={debounceQuery} />
+
+        {
+          inputRef.current !== null && inputRef.current.value.length > 0 &&
+          <img className={'header__input__clear'} src={clearIco} alt={'search icon'} onClick={clearInput} />
+        }
+      </div>
     </Body>
   );
 };
@@ -190,8 +197,8 @@ const Body = styled.header`
       left: 24px;
 
       @media (max-width: 1024px) {
-        top: 10px;
-        left: 10px;
+        top: 12px;
+        left: 12px;
       }
     }
     
@@ -212,7 +219,7 @@ const Body = styled.header`
       line-height: 24px;
 
       @media (max-width: 1024px) {
-        padding: 10px 10px 10px 44px;
+        padding: 12px 12px 12px 46px;
       }
     }
 
@@ -224,7 +231,7 @@ const Body = styled.header`
       cursor: pointer;
       
       @media (max-width: 1024px) {
-        top: 10px;
+        top: 12px;
         right: 14px;
       }
     }
@@ -329,18 +336,15 @@ const Body = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* width: 231px; */
-    min-width: 230px;
     margin-left: 51px; 
+    gap: 16px;
 
     @media (max-width: 1024px) {
       margin-left: 20px; 
-      /* min-width: 135px; */
     }
 
-    @media (max-width: 768px) {
-      min-width: 180px;
-      /* min-width: 135px; */
+    @media (max-width: 650px) {
+      gap: 8px;
     }
     
     @media (max-width: 520px) {

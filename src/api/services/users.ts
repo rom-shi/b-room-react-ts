@@ -3,26 +3,27 @@ import { UserModel } from '../../models/user';
 import axios from '../index';
 
 type UserResponse = {
-  accessToken?: string;
-  user: UserModel;
+  accessToken?: string
+  user: UserModel
 }
 
 type Data = {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 type EditData = {
-  email?: string;
-  password?: string;
-  name?: string;
-  newPassword?: string;
-  photo?: string;
+  email?: string
+  name?: string
+  newPassword?: string
+  password?: string
+  photo?: string
 }
 
 type photoData = {
-  file: string;
+  file: string
 }
+
 export const getUser = (): Promise<AxiosResponse<UserModel>> => {
   return axios.get('/user');
 };

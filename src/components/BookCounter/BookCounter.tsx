@@ -14,6 +14,7 @@ interface ICounter {
 
 const BookCounter: React.FC<ICounter> = ({ id, view }) => {
   const dispatch = useAppDispatch();
+
   const { cartItems } = useAppSelector((state) => state.cartSlice);
 
   const [item, setItem] = useState<CartItem>();
@@ -29,19 +30,19 @@ const BookCounter: React.FC<ICounter> = ({ id, view }) => {
 
   return (
     <Body>
-      <button className='counter minus' onClick={() => dispatch(decreaseCart({ id, view }))}>
-        <img src={Minus} alt='minus'/>
+      <button className={'counter minus'} onClick={() => dispatch(decreaseCart({ id, view }))}>
+        <img src={Minus} alt={'minus'} />
       </button>
 
-      {view === 'hard' && <div className='count'>{item?.hardCoverCount}</div>}
-      {view === 'paper' && <div className='count'>{item?.paperCoverCount}</div>}
+      {view === 'hard' && <div className={'count'}>{item?.hardCoverCount}</div>}
+      {view === 'paper' && <div className={'count'}>{item?.paperCoverCount}</div>}
 
-      <button className='counter plus' onClick={() => dispatch(increaseCart({ id, view }))}>
-        <img className='svg-plus' src={Plus} alt='plus'/>
+      <button className={'counter plus'} onClick={() => dispatch(increaseCart({ id, view }))}>
+        <img className={'svg-plus'} src={Plus} alt={'plus'} />
       </button>
 
-      <button className='counter delete' onClick={() => handleDelete(id, view)}>
-        <img src={Delete} alt='delete'/>
+      <button className={'counter delete'} onClick={() => handleDelete(id, view)}>
+        <img src={Delete} alt={'delete'} />
       </button>
     </Body>
   );
@@ -52,8 +53,8 @@ export default BookCounter;
 const Body = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 8px;
-  width: 305px;
+  margin: 8px 0;
+  max-width: 180px;
 
   .counter {
     display: flex;
@@ -73,6 +74,10 @@ const Body = styled.div`
   .count {
     font-size: 16px;
     margin: 0 20px;
+
+    @media screen and (max-width: 700px) {
+      margin: 0 12px;
+    }
   }
 
   .svg-plus {
@@ -87,6 +92,6 @@ const Body = styled.div`
   .delete {
     background: none;
     border: none;
-    margin-left: 50px;
+    margin-left: auto;
   }
 `;

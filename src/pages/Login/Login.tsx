@@ -2,13 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Helmet } from 'react-helmet-async';
+// import { yupResolver } from '@hookform/resolvers/yup';
 import { AxiosError } from 'axios';
-import * as yup from 'yup';
+// import * as yup from 'yup';
 import { useAppDispatch } from '../../store/hooks';
-import { loadUserThunk, putUser } from '../../store/reducers/user';
-import { loginUser } from '../../api/services/users';
-import { LoginModel } from '../../models/loginForm';
+import { loadUserThunk } from '../../store/reducers/user';
+// import { loginUser } from '../../api/services/users';
+// import { LoginModel } from '../../models/loginForm';
 import UButton from '../../components/UI/Button/UButton';
 import UInput from '../../components/UI/Input/UInput';
 import scrollToTop from '../../components/ScrollToTop/ScrollToTop';
@@ -25,23 +26,24 @@ const constans = {
   labelPassword: 'Enter your password',
 };
 
-const warningEmail = {
-  email: 'Wrong email',
-  max: 'Email too long, get another',
-  required: 'Need email',
-};
+// const warningEmail = {
+//   email: 'Wrong email',
+//   max: 'Email too long, get another',
+//   required: 'Need email',
+// };
 
-const warningPassword = {
-  matches: 'Password must contain at least 1 lowercase letter, at least 1 uppercase letter, and 1 special character',
-  min: 'Password shoud be min 6 charactes',
-  required: 'Need password',
-};
+// const warningPassword = {
+//   matches: 'Password must contain at least 1 lowercase letter,
+//    at least 1 uppercase letter, and 1 special character',
+//   min: 'Password shoud be min 6 charactes',
+//   required: 'Need password',
+// };
 
-const loginSchema = yup.object({
-  email: yup.string().email(warningEmail.email).required(warningEmail.required),
-  password: yup.string().required(warningPassword.required),
-  replay: yup.string(),
-});
+// const loginSchema = yup.object({
+//   email: yup.string().email(warningEmail.email).required(warningEmail.required),
+//   password: yup.string().required(warningPassword.required),
+//   replay: yup.string(),
+// });
 
 interface ILocation {
   from: {
@@ -70,7 +72,8 @@ const Login: React.FC = () => {
     },
   });
 
-  const onSubmit = async (data: LoginModel) => {
+  // const onSubmit = async (data: LoginModel) => {
+  const onSubmit = async () => {
     try {
       // const response = await loginUser(data);
       // dispatch(putUser(response.data.user));
@@ -87,32 +90,37 @@ const Login: React.FC = () => {
 
   return (
     <Body>
-      <form className='login-form' onSubmit={handleSubmit(onSubmit)}>
-        <h2 className='login-form__title'>Log In</h2>
+      <Helmet>
+        <title>Login</title>
+        <meta name={'description'} content={'Авторизуйтесь на сайте для больших возможностей'} />
+      </Helmet>
+
+      <form className={'login-form'} onSubmit={handleSubmit(onSubmit)}>
+        <h2 className={'login-form__title'}>Log In</h2>
 
         <UInput
-          placeholder={constans.placeholderEmail}
+          error={errors.email}
           icon={constans.mailIco}
           label={constans.labelEmail}
-          error={errors.email}
+          placeholder={constans.placeholderEmail}
           register={register}
           regtxt={'email'}
         />
 
         <UInput
-          placeholder={constans.placeholderPassword}
+          error={errors.password}
           icon={constans.hideIco}
           label={constans.labelPassword}
-          error={errors.password}
+          placeholder={constans.placeholderPassword}
           register={register}
           regtxt={'password'}
           type={'password'}
         />
 
-        <UButton text='Log In' view='primary'/>
+        <UButton text={'Log In'} view={'primary'} />
       </form>
 
-      <img className='login-form__picture' src={mainPicture} alt='Login picture'/>
+      <img className={'login-form__picture'} src={mainPicture} alt={'Login picture'} />
     </Body>
   );
 };
@@ -126,6 +134,15 @@ const Body = styled.main`
   padding: 0 calc((1.3% - 9px) * 8);
   max-width: var(--width_content);
 
+  @media screen and (max-width: 1024px) {
+    padding: 0 16px;
+  }
+
+  @media screen and (max-width: 560px) {
+    flex-direction: column;
+    margin: 32px auto;
+  }
+
   .login-form {
     font-weight: 700;
     font-size: 40px;
@@ -134,13 +151,21 @@ const Body = styled.main`
     max-width: 413px;
     width: 100%;
 
+    @media screen and (max-width: 560px) {
+      margin: auto;
+    }
+
     &__title {
       font-weight: 700;
       font-size: 40px;
       line-height: 60px;
       color: var(--dark);
-      margin: 0;
-      margin-bottom: 60px;
+      margin: 0 0 60px 0;
+
+      @media screen and (max-width: 560px) {
+        margin: 0 0 32px 0;
+        font-size: 32px;
+      }
     }
 
     &__picture {
@@ -149,7 +174,16 @@ const Body = styled.main`
       max-height: 522px;
       height: 45.7%;
       min-width: 390px;
-      padding-left:20px;
+      margin-left: 20px;
+
+      @media screen and (max-width: 700px) {
+        min-width: auto;
+        width: 250px;
+      }
+
+      @media screen and (max-width: 560px) {
+        margin: 32px auto 0;
+      }
     }
   }
 `;

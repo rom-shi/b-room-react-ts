@@ -1,5 +1,5 @@
 export type GenreModel = {
-  genreId: string;
-  genre: string;
   countBooks?: number
+  genre: string
+  genreId: string
 };

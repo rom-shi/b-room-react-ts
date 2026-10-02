@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import { IProfileValues } from '../../../pages/Profile/Profile';
 
 interface IInput {
-  icon: string,
-  topLabel?: string,
-  bottomLabel?: string,
-  type?: string,
-  placeholder: string,
-  disabled: boolean,
-  register: UseFormRegister<IProfileValues>,
-  registerName: 'name' | 'email' | 'password' | 'newPassword' | 'newPasswordReplay',
+  bottomLabel?: string
+  disabled: boolean
+  icon: string
+  placeholder: string
+  register: UseFormRegister<IProfileValues>
+  registerName: 'name' | 'email' | 'password' | 'newPassword' | 'newPasswordReplay'
+  topLabel?: string
+  type?: string
 }
 
 const UProfileInput: React.FC<IInput> = ({
@@ -19,14 +19,14 @@ const UProfileInput: React.FC<IInput> = ({
 }) => {
   return (
     <Body bottomLabel={bottomLabel}>
-      <div className='uinput__wrapper'>
-        <img className='uinput__icon' src={icon} alt='icon'/>
+      <div className={'uinput__wrapper'}>
+        <img className={'uinput__icon'} src={icon} alt='icon'/>
 
-        <div className='uinput__wparrer2'>
-          {topLabel && <label className='uinput__top-label'>{topLabel}</label>}
+        <div className={'uinput__wparrer2'}>
+          {topLabel && <label className={'uinput__top-label'}>{topLabel}</label>}
 
           <input
-            className='uinput__input'
+            className={'uinput__input'}
             type={type}
             placeholder={placeholder}
             disabled={disabled}
@@ -34,7 +34,8 @@ const UProfileInput: React.FC<IInput> = ({
           />
         </div>
       </div>
-      <span className="uinput__bottom-label">{bottomLabel}</span>
+
+      <span className={'uinput__bottom-label'}>{bottomLabel}</span>
     </Body>
   );
 };
@@ -48,8 +49,13 @@ interface IStyledProps {
 const Body = styled.div<IStyledProps>`
   display: flex;
   flex-direction: column;
-  margin-bottom: ${({ bottomLabel }) => (bottomLabel ? '0px' : '30px')};
+  margin-bottom: ${({ bottomLabel }) => (bottomLabel ? '0px' : '32px')};
   border-radius: 16px;
+
+  @media screen and (max-width: 520px) {
+    display: flex;
+    margin-bottom: ${({ bottomLabel }) => (bottomLabel ? '0px' : '24px')};
+  }
 
   .uinput__wrapper {
     display: flex;

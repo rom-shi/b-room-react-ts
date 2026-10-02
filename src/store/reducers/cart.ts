@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type CartItem = {
-  cartId: string,
-  hardCoverCount: number,
-  paperCoverCount: number,
+  cartId: string
+  hardCoverCount: number
+  paperCoverCount: number
 }
 
 interface ICartState {
-  cartItems: CartItem[],
+  cartItems: CartItem[]
 }
 
 const initialState: ICartState = {
@@ -113,8 +113,13 @@ const cart = createSlice({
       state.cartItems = tempArr;
     },
   },
-
 });
 
-export const { putCart, increaseCart, decreaseCart, deleteCart } = cart.actions;
+export const {
+  decreaseCart,
+  deleteCart,
+  increaseCart,
+  putCart,
+} = cart.actions;
+
 export default cart.reducer;

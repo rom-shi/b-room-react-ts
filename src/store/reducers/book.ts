@@ -11,31 +11,31 @@ import { getAdditionalBook } from '../../api/servicesTest/getAdditionalBook';
 import { getRecomendationBooks } from '../../api/servicesTest/getRecomendationBooks';
 
 interface IBooksState {
-  catalogBooks: BookModel[]
   cartBooks: BookModel[]
-  favoriteBooks: BookModel[]
-  oneBook: BookModel[]
-  recomendationBook: BookModel[]
-  minPrice: number
-  maxPrice: number
-  totalBooks: number
+  catalogBooks: BookModel[]
   currentPage: number
+  favoriteBooks: BookModel[]
   genres: GenreModel[]
+  maxPrice: number
+  minPrice: number
+  oneBook: BookModel | null
+  recomendationBook: BookModel[]
   status: 'init' | 'loading' | 'error' | 'success'
+  totalBooks: number
 }
 
 const initialState: IBooksState = {
-  catalogBooks: [],
   cartBooks: [],
-  favoriteBooks: [],
-  oneBook: [],
-  recomendationBook: [],
-  minPrice: 0,
-  maxPrice: 0,
-  totalBooks: 0,
+  catalogBooks: [],
   currentPage: 0,
+  favoriteBooks: [],
   genres: [],
+  maxPrice: 0,
+  minPrice: 0,
+  oneBook: null,
+  recomendationBook: [],
   status: 'init',
+  totalBooks: 0,
 };
 
 const book = createSlice({
@@ -55,14 +55,15 @@ const book = createSlice({
     putFavoriteBooks(state, action: PayloadAction<BookModel[]>) {
       state.favoriteBooks = action.payload;
     },
-    putOneBook(state, action: PayloadAction<BookModel[]>) {
+    putOneBook(state, action: PayloadAction<BookModel>) {
       state.oneBook = action.payload;
     },
     putGenres(state, action: PayloadAction<GenreModel[]>) {
       state.genres = action.payload;
     },
     putRating(state, action: PayloadAction<{id: string, rate: number}>) {
-      const book = state.oneBook[0];
+      const book = state.oneBook as BookModel;
+
       const newRating = (book.rating * book.ratingCount + action.payload.rate) /
         (book.ratingCount + 1);
       book.rating = newRating;
@@ -179,12 +180,13 @@ export const loadGenreThunk = createAsyncThunk('genres/getAll', () => {
 });
 
 export const {
-  putCatalogBooks,
-  putCartBooks,
-  putFavoriteBooks,
-  putOneBook,
-  putGenres,
-  putRating,
   deleteCartBooks,
+  putCartBooks,
+  putCatalogBooks,
+  putFavoriteBooks,
+  putGenres,
+  putOneBook,
+  putRating,
 } = book.actions;
+
 export default book.reducer;

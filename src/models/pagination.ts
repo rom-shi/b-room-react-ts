@@ -1,9 +1,9 @@
 export type PaginationModel = {
-  currentPage: number;
-  numberPerPage: number;
-  has_previous: boolean;
-  previous: number;
-  has_next: boolean;
-  next: number;
-  last_page: number;
-}
+  currentPage: number
+  has_next: boolean
+  has_previous: boolean
+  last_page: number
+  next: number
+  numberPerPage: number
+  previous: number
+};

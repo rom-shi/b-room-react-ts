@@ -1,32 +1,33 @@
 import styled from 'styled-components';
 
 interface IButton {
-  text: string,
-  view: 'primary' | 'secondary',
-  icon?: string,
-  width?: string,
-  mtop?: string,
-  mright?: string,
-  onClick?: (e: React.MouseEvent<HTMLElement>) => void,
+  icon?: string
+  mright?: string
+  mtop?: string
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void
+  text: string
+  view: 'primary' | 'secondary'
+  width?: string
 }
 
-const UButton: React.FC<IButton> = ({
-  text, view, icon, width, mtop, mright, onClick,
-}) => {
+const UButton: React.FC<IButton> = ({ text, view, icon, width, mtop, mright, onClick }) => {
   const thisFunc = (e: React.MouseEvent<HTMLElement>) => {
     if (!onClick) return;
+
     onClick(e);
   };
+
   return (
     <Body
-      view={view}
-      text={text}
-      width={width}
-      mtop={mtop}
       mright={mright}
+      mtop={mtop}
       onClick={(e) => thisFunc(e)}
+      text={text}
+      view={view}
+      width={width}
     >
-      {icon && <img src={icon} alt=''/>}
+      {icon && <img src={icon} alt={''} />}
+
       {text}
     </Body>
   );
@@ -50,7 +51,7 @@ const Body = styled.button<IStyledProps>`
   border: 2px solid #344966;
   font-weight: 500;
   font-size: 16px;
-  padding: 0.8em 40px;
+  padding: 12px 40px;
   max-width: 305px;
   width: ${({ width }) => (width ? 'min-content' : '')};
   align-items: center;

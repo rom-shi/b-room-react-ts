@@ -2,15 +2,13 @@ import styled from 'styled-components';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { reqNoLimit, reqPagesize, reqPagination } from '../../store/reducers/request';
 import { putCatalogBooks } from '../../store/reducers/book';
+import { setOpenedFilter } from '../../store/reducers/user';
 import fillChBox from '../../assets/checkbox-checked.svg';
 import emptyChBox from '../../assets/checkbox-empty.svg';
 
-interface IProps {
-  setOpenFilter: (name: string) => void
-}
-
-const PageSize: React.FC<IProps> = ({ setOpenFilter }) => {
+const PageSize: React.FC = () => {
   const dispatch = useAppDispatch();
+
   const { pageSize, noLimit } = useAppSelector((store) => store.requestSlice);
 
   const handlerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,40 +21,40 @@ const PageSize: React.FC<IProps> = ({ setOpenFilter }) => {
     dispatch(reqNoLimit());
     dispatch(putCatalogBooks([]));
     dispatch(reqPagination(0));
-    setOpenFilter('');
+    dispatch(setOpenedFilter(''));
   };
 
   return (
     <Body>
       <Filter>
-        <input id="pagesize-4" name="pagesize" type="radio" value="4" onChange={handlerChange} checked={pageSize === 4}/>
-        <label htmlFor="pagesize-4">4</label>
+        <input id={'pagesize-4'} name={'pagesize'} type={'radio'} value={'4'} onChange={handlerChange} checked={pageSize === 4} />
+        <label htmlFor={'pagesize-4'}>4</label>
       </Filter>
 
       <Filter>
-        <input id="pagesize-8" name="pagesize" type="radio" value="8" onChange={handlerChange} checked={pageSize === 8}/>
-        <label htmlFor="pagesize-8">8</label>
+        <input id={'pagesize-8'} name={'pagesize'} type={'radio'} value={'8'} onChange={handlerChange} checked={pageSize === 8} />
+        <label htmlFor={'pagesize-8'}>8</label>
       </Filter>
 
       <Filter>
-        <input id="pagesize-12" name="pagesize" type="radio" value="12" onChange={handlerChange} checked={pageSize === 12}/>
-        <label htmlFor="pagesize-12">12</label>
+        <input id={'pagesize-12'} name={'pagesize'} type={'radio'} value={'12'} onChange={handlerChange} checked={pageSize === 12} />
+        <label htmlFor={'pagesize-12'}>12</label>
       </Filter>
 
       <Filter>
-        <input id="pagesize-16" name="pagesize" type="radio" value="16" onChange={handlerChange} checked={pageSize === 16}/>
-        <label htmlFor="pagesize-16">16</label>
+        <input id={'pagesize-16'} name={'pagesize'} type={'radio'} value={'16'} onChange={handlerChange} checked={pageSize === 16} />
+        <label htmlFor={'pagesize-16'}>16</label>
       </Filter>
 
       <Checkbox>
         <input
-          type="checkbox"
-          className="ucheckbox"
           checked={noLimit}
+          className={'ucheckbox'}
           onChange={handleToggleLimit}
+          type={'checkbox'}
         />
 
-        <span className="fake-checkbox"/>
+        <span className={'fake-checkbox'} />
 
         No limit
       </Checkbox>
@@ -78,6 +76,7 @@ const Body = styled.div`
   border-radius: 16px;
   width: max-content;
   cursor: default;
+  box-shadow: 0px 0px 7px 3px rgba(34, 60, 80, 0.13);
 `;
 
 const Filter = styled.div`

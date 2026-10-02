@@ -1,19 +1,21 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { reqPagination } from '../../store/reducers/request';
+import scrollToTop from '../ScrollToTop/ScrollToTop';
 import arrowLeft from '../../assets/icons/arrow-left.svg';
 import arrowRight from '../../assets/icons/arrow-right.svg';
 import fillDot from '../../assets/icons/dot-fill.svg';
 import emptyDot from '../../assets/icons/dot-empty.svg';
-import scrollToTop from '../ScrollToTop/ScrollToTop';
 
 const Pagination: React.FC = () => {
   const dispatch = useAppDispatch();
+
   const total = useAppSelector((store) => store.bookSlice.totalBooks);
   const { pageSize, currentPage } = useAppSelector((store) => store.requestSlice);
 
   const pageCount = Math.ceil(total / pageSize);
   const arr = [];
+
   for (let i = 0; i < pageCount; i++) {
     arr.push(i);
   }
@@ -37,7 +39,7 @@ const Pagination: React.FC = () => {
 
   return (
     <Body>
-      {(currentPage !== 0) && <div className='pagination__left' onClick={handleSetPreviusPage}/>}
+      {(currentPage !== 0) && <div className={'pagination__left'} onClick={handleSetPreviusPage}/>}
 
       {arr.length > 1 &&
         arr.map((item) => <div
@@ -47,7 +49,7 @@ const Pagination: React.FC = () => {
         />)
       }
 
-      {(currentPage + 1 !== pageCount) && <div className='pagination__right' onClick={handleSetNextPage}/>}
+      {(currentPage + 1 !== pageCount) && <div className={'pagination__right'} onClick={handleSetNextPage}/>}
     </Body>
   );
 };
@@ -58,6 +60,10 @@ const Body = styled.div`
   display: flex;
   margin: 0 auto;
   align-items: center;
+
+  @media screen and (max-width: 1280px) {
+    margin-top: 64px;
+  }
 
   .pagination {
     &__left {
@@ -76,12 +82,18 @@ const Body = styled.div`
       height: 24px;
       margin: 0 5px;
       cursor: pointer;
+      transition: all 0.2s;
 
       :hover {
         background: url(${fillDot});
         background-size: cover;
         width: 24px;
         height: 24px;
+        transition: all 0.2s;
+      }
+
+      @media screen and (max-width: 400px) {
+        margin: 0 3px;
       }
     }
 

@@ -4,23 +4,23 @@ import fillChBox from '../../../assets/checkbox-checked.svg';
 import emptyChBox from '../../../assets/checkbox-empty.svg';
 
 interface ICheckbox {
-  genre: GenreModel
-  func: (item: GenreModel) => void;
-  selectedGenres: string[]
   count?: number
+  func: (item: GenreModel) => void;
+  genre: GenreModel
+  selectedGenres: string[]
 }
 
 const UCheckbox: React.FC<ICheckbox> = ({ genre, func, selectedGenres, count }) => {
   return (
     <Body>
       <input
-        type="checkbox"
-        className="ucheckbox"
         checked={selectedGenres.includes(genre.genreId)}
+        className={'ucheckbox'}
         onChange={() => func(genre)}
+        type={'checkbox'}
       />
 
-      <span className="fake-checkbox"/>
+      <span className={'fake-checkbox'} />
 
       {genre.genre}
       {' '}

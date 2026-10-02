@@ -3,14 +3,16 @@ import { UserModel } from '../../models/user';
 import { getUser } from '../../api/servicesTest/users';
 
 interface IUserState {
-  user: UserModel | null;
-  error?: string;
-  status: 'init' | 'loading' | 'error' | 'success';
+  error?: string
+  openedFilter: string
+  status: 'init' | 'loading' | 'error' | 'success'
+  user: UserModel | null
 }
 
 const initialState: IUserState = {
-  user: null,
+  openedFilter: '',
   status: 'init',
+  user: null,
 };
 
 const user = createSlice({
@@ -34,6 +36,9 @@ const user = createSlice({
       if (state.user === null) return;
       state.user.favoriteBooks.splice(state.user.favoriteBooks.indexOf(action.payload.id), 1);
     },
+    setOpenedFilter(state, action: PayloadAction<string>) {
+      state.openedFilter = action.payload;
+    },
   },
   extraReducers: (builder) => builder
     .addCase(loadUserThunk.pending, (state) => {
@@ -55,10 +60,12 @@ export const loadUserThunk = createAsyncThunk('user/get', () => {
 // export const { reducer: userReducer, actions: userAction } = user;
 
 export const {
-  putUser,
-  logoutUser,
   addFavoriteBook,
-  removeFavoriteBook,
+  logoutUser,
   putRateBook,
+  putUser,
+  removeFavoriteBook,
+  setOpenedFilter,
 } = user.actions;
+
 export default user.reducer;

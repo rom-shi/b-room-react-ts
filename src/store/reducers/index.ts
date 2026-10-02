@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
-import userSlice from './user';
 import bookSlice from './book';
 import cartSlice from './cart';
 import requestSlice from './request';
+import userSlice from './user';
 
 const rootReducer = combineReducers({
-  userSlice,
   bookSlice,
-  requestSlice,
   cartSlice,
+  requestSlice,
+  userSlice,
 });
 
 export default rootReducer;
